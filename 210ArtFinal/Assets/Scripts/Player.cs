@@ -24,10 +24,10 @@ public class Player : MonoBehaviour
 
     private void HandleMovementInput()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        //float vertical = Input.GetAxis("Vertical");
 
-        Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
+        Vector3 inputDir = new Vector3(horizontal, 0f, 0f).normalized;
 
         if (inputDir.magnitude >= 0.1f)
         {
