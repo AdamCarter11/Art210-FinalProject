@@ -13,6 +13,8 @@ public class DayNNight : MonoBehaviour
     [SerializeField] float vignetteIntensityMax = 0.6f; // Maximum intensity
     [SerializeField] float vignetteIntensityMin = 0.1f; // Minimum intensity
     [SerializeField] float lerpSpeed = 0.5f; // Speed of the lerp
+
+    [SerializeField] Material dayMat, nightMat;
     void Start()
     {
         // Assuming you've set up your volume in the Inspector or found it through code
@@ -24,6 +26,7 @@ public class DayNNight : MonoBehaviour
                 Debug.LogError("Post-Processing Volume not found. Make sure you've assigned it in the Inspector or attach this script to an object with the Volume component.");
             }
         }
+        dayMat = RenderSettings.skybox;
     }
     void Update()
     {
@@ -35,6 +38,7 @@ public class DayNNight : MonoBehaviour
             // Lerp the vignette intensity to the maximum value
             float targetIntensity = Mathf.Lerp(GetVignetteIntensity(), vignetteIntensityMax, lerpSpeed * Time.deltaTime);
             SetVignetteIntensity(targetIntensity);
+            RenderSettings.skybox = nightMat;
         }
         else
         {
@@ -42,6 +46,7 @@ public class DayNNight : MonoBehaviour
             // Lerp the vignette intensity to the minimum value
             float targetIntensity = Mathf.Lerp(GetVignetteIntensity(), vignetteIntensityMin, lerpSpeed * Time.deltaTime);
             SetVignetteIntensity(targetIntensity);
+            RenderSettings.skybox = dayMat;
         }
     }
     float GetVignetteIntensity()
