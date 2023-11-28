@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,16 +9,26 @@ public class Player : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded;
+    private Vector3 spawnPoint;
+    private bool lerpSpeed = false;
+    private float startTime;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        spawnPoint = transform.position;
     }
 
     private void Update()
     {
-        HandleMovementInput();
+        if(!lerpSpeed)
+            HandleMovementInput();
         CheckGrounded();
+
+        if (lerpSpeed)
+        {
+            LerpSpeed();
+        }
     }
 
     private void HandleMovementInput()
@@ -53,5 +62,37 @@ public class Player : MonoBehaviour
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
     }
-}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Hammer"))
+        {
+            StartCoroutine(HandleCollision());
+        }
+    } 
+
+    IEnumerator HandleCollision()
+    {
+        startTime = Time.deltaTime;
+        lerpSpeed = true;
+        rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(.4f);
+        lerpSpeed = false;
+        // Teleport the player back to spawn
+        transform.position = spawnPoint;
+        // Reset time scale to normal
+        Time.timeScale = 1f;
+        //rb.useGravity = true;
+    }
+    void LerpSpeed()
+    {
+        float slowdownDuration = .7f;
+        //rb.useGravity = false;
+        //rb.velocity = Vector3.zero;
+        float targetSlow = .5f;
+        // Slow down time
+        float t = (Time.time - startTime) / slowdownDuration;
+        Time.timeScale = Mathf.Lerp(1, targetSlow, t);
+    }
+} 
   
