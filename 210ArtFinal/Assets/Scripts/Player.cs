@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     [SerializeField] float speed = 5f;
     [SerializeField] float rotationSpeed = 700f;
     [SerializeField] float jumpForce = 8f;
+    [SerializeField] SpriteRenderer playerSprite;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -34,6 +35,16 @@ public class Player : MonoBehaviour
     private void HandleMovementInput()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
+        if(horizontal > 0)
+        {
+            // flip facing right
+            playerSprite.flipX = false;
+        }
+        else
+        {
+            // flip facing left
+            playerSprite.flipX = true;
+        }
         //float vertical = Input.GetAxis("Vertical");
 
         Vector3 inputDir = new Vector3(horizontal, 0f, 0f).normalized;
@@ -42,7 +53,7 @@ public class Player : MonoBehaviour
         {
             float targetAngle = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, 0.1f);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            //transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             rb.velocity = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
