@@ -1111,7 +1111,7 @@ GameObject:
   - component: {fileID: 799473928}
   - component: {fileID: 799473927}
   m_Layer: 0
-  m_Name: SideView-Sheet_0
+  m_Name: PlayerArt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1246,7 +1246,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: eddc3d9910b21fb4dac232178e4de1a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.31
+      value: 9.72
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eddc3d9910b21fb4dac232178e4de1a2,
         type: 3}
@@ -1468,6 +1468,7 @@ MonoBehaviour:
   rotationSpeed: 700
   jumpForce: 5
   playerSprite: {fileID: 799473928}
+  playerAnimator: {fileID: 799473927}
 --- !u!54 &918441262
 Rigidbody:
   m_ObjectHideFlags: 0

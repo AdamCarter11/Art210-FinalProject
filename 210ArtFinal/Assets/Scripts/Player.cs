@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] float rotationSpeed = 700f;
     [SerializeField] float jumpForce = 8f;
     [SerializeField] SpriteRenderer playerSprite;
+    [SerializeField] Animator playerAnimator;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -35,12 +36,13 @@ public class Player : MonoBehaviour
     private void HandleMovementInput()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
-        if(horizontal > 0)
+        playerAnimator.SetFloat("Speed", Mathf.Abs(horizontal)); 
+        if (horizontal > 0)
         {
             // flip facing right
             playerSprite.flipX = false;
         }
-        else
+        else if(horizontal < 0)
         {
             // flip facing left
             playerSprite.flipX = true;
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
 
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
+            playerAnimator.SetTrigger("Jump");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
