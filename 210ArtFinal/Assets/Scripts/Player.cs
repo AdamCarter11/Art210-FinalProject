@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,12 +9,14 @@ public class Player : MonoBehaviour
     [SerializeField] float jumpForce = 8f;
     [SerializeField] SpriteRenderer playerSprite;
     [SerializeField] Animator playerAnimator;
+    [SerializeField] GameObject boulder;
 
     private Rigidbody rb;
     private bool isGrounded;
     private Vector3 spawnPoint;
     private bool lerpSpeed = false;
     private float startTime;
+    GameObject spawnedBoulder;
 
     private void Start()
     {
@@ -99,8 +102,22 @@ public class Player : MonoBehaviour
         {
             other.gameObject.GetComponent<Animator>().SetTrigger("CheckPoint");
             spawnPoint = other.gameObject.transform.position;
+            spawnedBoulder = Instantiate(boulder, new Vector3(other.transform.position.x, other.transform.position.y + 5f, other.transform.position.z), Quaternion.identity);
         }
-    } 
+        if (other.gameObject.CompareTag("Goal"))
+        {
+            // player wins
+            print("Player wins!");
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Boulder"))
+        {
+            Destroy(spawnedBoulder);
+            StartCoroutine(HandleCollision());
+        }
+    }
 
     IEnumerator HandleCollision()
     {
