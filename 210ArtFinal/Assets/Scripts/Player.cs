@@ -83,6 +83,23 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(HandleCollision());
         }
+        if (other.gameObject.CompareTag("JumpPad"))
+        {
+            other.gameObject.GetComponent<Animator>().SetTrigger("Spring");
+            // Get the current velocity of the rigidbody
+            Vector3 currentVelocity = rb.velocity;
+
+            // Calculate the downward force based on the y velocity
+            float downwardForce = -currentVelocity.y * 2f;
+
+            // Add the downward force to the rigidbody
+            rb.AddForce(new Vector3(0f, downwardForce, 0f), ForceMode.Impulse);
+        }
+        if (other.gameObject.CompareTag("CheckPoint"))
+        {
+            other.gameObject.GetComponent<Animator>().SetTrigger("CheckPoint");
+            spawnPoint = other.gameObject.transform.position;
+        }
     } 
 
     IEnumerator HandleCollision()
