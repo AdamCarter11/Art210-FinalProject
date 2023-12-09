@@ -102,7 +102,9 @@ public class Player : MonoBehaviour
         {
             other.gameObject.GetComponent<Animator>().SetTrigger("CheckPoint");
             spawnPoint = other.gameObject.transform.position;
-            spawnedBoulder = Instantiate(boulder, new Vector3(other.transform.position.x, other.transform.position.y + 5f, other.transform.position.z), Quaternion.identity);
+
+            if(transform.position.x < 30f)
+                spawnedBoulder = Instantiate(boulder, new Vector3(other.transform.position.x, other.transform.position.y + 5f, other.transform.position.z), Quaternion.identity);
         }
         if (other.gameObject.CompareTag("Goal"))
         {
